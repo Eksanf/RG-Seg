@@ -1,6 +1,6 @@
 # RG-Seg
 
-Official implementation and evaluation resources for **RG-Seg: A 3D LiDAR-Based Method for Heterogeneous Ramp-Aware Ground Segmentation**.
+Official companion repository and reproducibility record for **RG-Seg: A 3D LiDAR-Based Method for Heterogeneous Ramp-Aware Ground Segmentation**.
 
 <p align="center">
   <img src="assets/ramp_observations.png" alt="Forward-facing and semi-observed ramp scenes" width="92%">
@@ -75,15 +75,25 @@ The same resulting configuration is used across the three data sources; it is no
 
 ## Baseline Reproducibility
 
-The comparison includes R-GPF, CascadedSeg, PatchWork, PatchWork++, and LR-Seg. A dedicated baseline record will identify, for every method:
+The following records identify the implementations and configurations used to generate the baseline results in the paper.
 
-- the implementation actually used in the experiments;
-- the upstream repository and exact version, when public code was used;
-- whether the configuration came from the original paper, an official default, or an author-selected setting;
-- all material modifications made for the comparison; and
-- confirmation that one fixed configuration was used across the three data sources.
+| Method | Implementation used | Version anchor | Configuration source |
+|---|---|---|---|
+| R-GPF | [URL-KAIST Ground-Segmentation-Benchmark](https://github.com/url-kaist/Ground-Segmentation-Benchmark) | [`af253df`](https://github.com/url-kaist/Ground-Segmentation-Benchmark/commit/af253dfad8d84668137a59295e41599a26558704) | [`config/params.yaml`](https://github.com/url-kaist/Ground-Segmentation-Benchmark/blob/af253dfad8d84668137a59295e41599a26558704/config/params.yaml), `r_gpf` section |
+| CascadedSeg | [URL-KAIST Ground-Segmentation-Benchmark](https://github.com/url-kaist/Ground-Segmentation-Benchmark), based on the [authors' implementation](https://github.com/n-patiphon/cascaded_ground_seg) | [`af253df`](https://github.com/url-kaist/Ground-Segmentation-Benchmark/commit/af253dfad8d84668137a59295e41599a26558704) | [`config/params.yaml`](https://github.com/url-kaist/Ground-Segmentation-Benchmark/blob/af253dfad8d84668137a59295e41599a26558704/config/params.yaml), `cascaded_gseg` section |
+| PatchWork | [URL-KAIST Ground-Segmentation-Benchmark](https://github.com/url-kaist/Ground-Segmentation-Benchmark), the paper-version comparison code recommended by the [PatchWork repository](https://github.com/LimHyungTae/patchwork) | [`af253df`](https://github.com/url-kaist/Ground-Segmentation-Benchmark/commit/af253dfad8d84668137a59295e41599a26558704) | [`config/params.yaml`](https://github.com/url-kaist/Ground-Segmentation-Benchmark/blob/af253dfad8d84668137a59295e41599a26558704/config/params.yaml), `patchwork` section |
+| PatchWork++ | [URL-KAIST PatchWork++ ROS1](https://github.com/url-kaist/patchwork-plusplus-ros) | [`6f9b081`](https://github.com/url-kaist/patchwork-plusplus-ros/commit/6f9b081d68d0c9eddda74d2763de1d3f8e51ac04) | [`config/params.yaml`](https://github.com/url-kaist/patchwork-plusplus-ros/blob/6f9b081d68d0c9eddda74d2763de1d3f8e51ac04/config/params.yaml) |
+| LR-Seg | Authors' original C++ implementation corresponding to the LR-Seg paper | Author-provided experimental snapshot; no public tag | Parameter set reported in the LR-Seg paper |
 
-Methods without a suitable public implementation will be accompanied by our in-house reimplementation and a mapping from the original paper to the implemented parameters.
+The main fixed settings are summarized below.
+
+- **R-GPF:** 3 fitting iterations, 10 LPR points, 9-point minimum, seed/distance thresholds of 0.4/0.12 m, 32 rings, 108 sectors, and an 80 m maximum range.
+- **CascadedSeg:** 5 deg maximum slope, 0.50 m vertical threshold, 0.08 m plane-distance threshold, 4 sections, and plane-height/angle thresholds of 5.0 m/16 deg.
+- **PatchWork:** 3 iterations, 20 LPR points, 10-point minimum, seed/distance thresholds of 0.5/0.125 m, a 2.7-80 m range, uprightness threshold 0.707, CZM sector counts `[16, 32, 54, 32]`, and ring counts `[2, 4, 4, 4]`.
+- **PatchWork++:** 3 iterations, 20 LPR points, 10-point minimum, ground seed/distance thresholds of 0.3/0.125 m, vertical seed/distance thresholds of 0.25/0.10 m, a 2.7-80 m range, uprightness threshold 0.707, with RNR, R-VPF, and TGR enabled.
+- **LR-Seg:** ring counts `[4, 2]`, sector counts `[32, 16]`, a 0.5-50 m range, `z_lpr=10`, `z_seed=0.45`, `tau=0.3`, `theta_uprightness=0.866`, and `beta_angle=0.9`.
+
+Only point-type and data-I/O adapters were added, together with the LiDAR mounting height and beam count supplied as sensor metadata. No baseline algorithmic stage or decision threshold was changed. One algorithmic configuration per method was used for all three data sources; no baseline was retuned for an individual data source.
 
 ## Software Environment
 
