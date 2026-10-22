@@ -22,7 +22,7 @@ The HRD module uses polar-grid partitioning, grid-level geometric model discrimi
 
 ## Repository Status
 
-The source code and reproducibility materials are being organized for public release. The revision release will include:
+The RG-Seg source code and evaluation scripts will be released in this repository. The public release will include:
 
 - the C++ implementation of RG-Seg and the HRD module;
 - ROS Melodic and PCL build instructions;
