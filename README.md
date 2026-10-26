@@ -65,7 +65,7 @@ The reported parameter configuration is:
 | Region-growing threshold, `epsilon_th` | 15 deg |
 | Ramp cutoff angle, `theta_max` | 45 deg |
 
-The same resulting configuration is used across the three data sources; it is not retuned separately for an individual dataset. As stated in the paper, the evaluation data contributed to RG-Seg parameter selection, whereas the baselines retained the configurations from their cited papers or repositories. This asymmetric protocol may favor RG-Seg, so the results are not presented as an independently tuned comparison or an independent cross-dataset generalization test.
+The same resulting configuration is used across the three data sources; it is not retuned separately for an individual dataset. The LiDAR mounting height and beam elevation angles used by RG-Seg follow the physical or simulated input sensor and are treated as sensor metadata rather than tunable algorithmic parameters. As stated in the paper, the evaluation data contributed to RG-Seg parameter selection, whereas the baselines retained the configurations from their cited papers or repositories. This asymmetric protocol may favor RG-Seg, so the results are not presented as an independently tuned comparison or an independent cross-dataset generalization test.
 
 <p align="center">
   <img src="assets/parameter_sensitivity.png" alt="Parameter sensitivity analysis on three data sources" width="92%">
