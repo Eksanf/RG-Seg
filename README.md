@@ -10,7 +10,7 @@ Official companion repository and reproducibility record for **RG-Seg: A 3D LiDA
 
 ## Overview
 
-RG-Seg is a deterministic, non-learning method for ramp-aware ground segmentation from 3D LiDAR point clouds. It combines an existing ground-segmentation backbone with a plug-and-play Heterogeneous Ramp Detection (HRD) module designed to handle both forward-facing and semi-observed ramps.
+RG-Seg is a geometric, non-learning method for ramp-aware ground segmentation from 3D LiDAR point clouds. Its complete pipeline contains a ground-surface estimation stage followed by a Heterogeneous Ramp Detection (HRD) module designed to handle both forward-facing and semi-observed ramps. The HRD module can also be attached to existing ground-segmentation backbones for the plug-and-play experiments reported in the paper.
 
 The HRD module uses polar-grid partitioning, grid-level geometric model discrimination, and eight-neighborhood region growing to identify connected ramp structures. Non-planar residuals are preserved as potential obstacle candidates rather than being merged into the ramp surface.
 
@@ -65,13 +65,13 @@ The reported parameter configuration is:
 | Region-growing threshold, `epsilon_th` | 15 deg |
 | Ramp cutoff angle, `theta_max` | 45 deg |
 
-The same resulting configuration is used across the three data sources; it is not retuned separately for an individual dataset. As stated in the paper, the evaluation data contributed to parameter selection, so the results are not presented as an independent cross-dataset generalization test.
+The same resulting configuration is used across the three data sources; it is not retuned separately for an individual dataset. As stated in the paper, the evaluation data contributed to RG-Seg parameter selection, whereas the baselines retained the configurations from their cited papers or repositories. This asymmetric protocol may favor RG-Seg, so the results are not presented as an independently tuned comparison or an independent cross-dataset generalization test.
 
 <p align="center">
   <img src="assets/parameter_sensitivity.png" alt="Parameter sensitivity analysis on three data sources" width="92%">
 </p>
 
-<p align="center"><em>Ramp-segmentation F1 sensitivity to the four principal parameters. Dashed lines mark the selected tested values.</em></p>
+<p align="center"><em>Ramp-segmentation F1 sensitivity to the four principal parameters. Dashed lines mark the selected tested values; shaded bands are visual guides, not confidence intervals.</em></p>
 
 ## Baseline Reproducibility
 
@@ -83,7 +83,7 @@ The following records identify the implementations and configurations used to ge
 | CascadedSeg | [URL-KAIST Ground-Segmentation-Benchmark](https://github.com/url-kaist/Ground-Segmentation-Benchmark), based on the [authors' implementation](https://github.com/n-patiphon/cascaded_ground_seg) | [`af253df`](https://github.com/url-kaist/Ground-Segmentation-Benchmark/commit/af253dfad8d84668137a59295e41599a26558704) | [`config/params.yaml`](https://github.com/url-kaist/Ground-Segmentation-Benchmark/blob/af253dfad8d84668137a59295e41599a26558704/config/params.yaml), `cascaded_gseg` section |
 | PatchWork | [URL-KAIST Ground-Segmentation-Benchmark](https://github.com/url-kaist/Ground-Segmentation-Benchmark), the paper-version comparison code recommended by the [PatchWork repository](https://github.com/LimHyungTae/patchwork) | [`af253df`](https://github.com/url-kaist/Ground-Segmentation-Benchmark/commit/af253dfad8d84668137a59295e41599a26558704) | [`config/params.yaml`](https://github.com/url-kaist/Ground-Segmentation-Benchmark/blob/af253dfad8d84668137a59295e41599a26558704/config/params.yaml), `patchwork` section |
 | PatchWork++ | [URL-KAIST PatchWork++ ROS1](https://github.com/url-kaist/patchwork-plusplus-ros) | [`6f9b081`](https://github.com/url-kaist/patchwork-plusplus-ros/commit/6f9b081d68d0c9eddda74d2763de1d3f8e51ac04) | [`config/params.yaml`](https://github.com/url-kaist/patchwork-plusplus-ros/blob/6f9b081d68d0c9eddda74d2763de1d3f8e51ac04/config/params.yaml) |
-| LR-Seg | Authors' original C++ implementation corresponding to the LR-Seg paper | Author-provided experimental snapshot; no public tag | Parameter set reported in the LR-Seg paper |
+| LR-Seg | Non-public C++ implementation of our research group's prior LR-Seg method | Author-provided experimental snapshot; no public tag | Parameter set reported in the LR-Seg paper |
 
 The main fixed settings are summarized below.
 
@@ -93,7 +93,7 @@ The main fixed settings are summarized below.
 - **PatchWork++:** 3 iterations, 20 LPR points, 10-point minimum, ground seed/distance thresholds of 0.3/0.125 m, vertical seed/distance thresholds of 0.25/0.10 m, a 2.7-80 m range, uprightness threshold 0.707, with RNR, R-VPF, and TGR enabled.
 - **LR-Seg:** ring counts `[4, 2]`, sector counts `[32, 16]`, a 0.5-50 m range, `z_lpr=10`, `z_seed=0.45`, `tau=0.3`, `theta_uprightness=0.866`, and `beta_angle=0.9`.
 
-Only point-type and data-I/O adapters were added, together with the LiDAR mounting height and beam count supplied as sensor metadata. No baseline algorithmic stage or decision threshold was changed. One algorithmic configuration per method was used for all three data sources; no baseline was retuned for an individual data source.
+Only point-type and data-I/O adapters were added, together with the LiDAR mounting height and beam count supplied as sensor metadata. For CascadedSeg, `sensor_model` matched the input LiDAR and was set to 16, 32, or 64 beams. These values describe sensor geometry; the algorithmic stages and decision thresholds remained fixed. One algorithmic configuration per method was used for all three data sources, and no baseline decision threshold was retuned for an individual data source.
 
 ## Software Environment
 
