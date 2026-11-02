@@ -53,7 +53,7 @@ The following examples illustrate the method on forward-facing and semi-observed
 The paper evaluates one fixed RG-Seg parameter configuration on three data sources:
 
 - 600 annotated scans sampled from 30 real-world ramp scenes;
-- 3,000 synthetic scans generated with HDL-16, HDL-32, and HDL-64 sensor models; and
+- 3,000 synthetic scans generated with 16-, 32-, and 64-beam LiDAR sensor models; and
 - 200 ramp-containing scans selected from SemanticKITTI.
 
 The reported parameter configuration is:
